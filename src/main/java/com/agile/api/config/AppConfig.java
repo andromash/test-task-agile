@@ -2,7 +2,10 @@ package com.agile.api.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -46,5 +49,15 @@ public class AppConfig {
         factoryBean.setHibernateProperties(properties);
         factoryBean.setPackagesToScan("com.agile.api.entity");
         return factoryBean;
+    }
+
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    public CloseableHttpClient getHttpClient() {
+        return HttpClients.createDefault();
     }
 }
