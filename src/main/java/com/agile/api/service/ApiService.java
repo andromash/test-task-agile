@@ -26,14 +26,14 @@ public class ApiService {
     public AuthResponseDto getAuthToken() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String url = "http://interview.agileengine.com/auth";
-        HttpPost req = new HttpPost(url);
+        HttpPost request = new HttpPost(url);
         try {
-            req.setEntity(new StringEntity("{\"apiKey\" : \"23567b218376f79d9415\"}"));
-            req.addHeader("Content-Type", "application/json");
+            request.setEntity(new StringEntity("{\"apiKey\" : \"23567b218376f79d9415\"}"));
+            request.addHeader("Content-Type", "application/json");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not connect to URL " + url, e);
         }
-        try (CloseableHttpResponse response = httpClient.execute(req)) {
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
             return mapper.readValue(response.getEntity().getContent(), AuthResponseDto.class);
         } catch (IOException e) {
             throw new RuntimeException("Can not send POST request to " + url, e);
