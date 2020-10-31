@@ -2,6 +2,7 @@ package com.agile.api.service;
 
 import com.agile.api.dto.PageDto;
 import com.agile.api.dto.PictureDto;
+import com.agile.api.dto.PictureResponseDto;
 import com.agile.api.entity.Picture;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -34,5 +35,12 @@ public class PictureMapper {
         }
         pageDto.setPictures(pictureDtos);
         return pageDto;
+    }
+
+    public PictureResponseDto mapPictureToResponseDto(Picture picture) {
+        PictureResponseDto pictureResponseDto = new PictureResponseDto();
+        pictureResponseDto.setId(picture.getId());
+        pictureResponseDto.setLink(picture.getLink());
+        return pictureResponseDto;
     }
 }

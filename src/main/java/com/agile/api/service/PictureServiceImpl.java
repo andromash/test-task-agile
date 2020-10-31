@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PictureServiceImpl implements PictureService {
+    private static final String FIRST_PAGE = "1";
     private final PictureDao pictureDao;
 
     @Autowired
@@ -25,7 +26,7 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public List<Picture> getAll() {
         Map<String, String[]> defaultMap = new HashMap<>();
-        defaultMap.put("page", new String[]{"1"});
+        defaultMap.put("page", new String[]{FIRST_PAGE});
         return pictureDao.getByParameter(defaultMap);
     }
 
