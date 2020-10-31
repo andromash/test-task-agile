@@ -5,6 +5,8 @@ import com.agile.api.entity.PictureDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PictureDetailsServiceImpl implements PictureDetailsService {
     private final PictureDetailsDao pictureDetailsDao;
@@ -17,5 +19,10 @@ public class PictureDetailsServiceImpl implements PictureDetailsService {
     @Override
     public PictureDetails add(PictureDetails details) {
         return pictureDetailsDao.add(details);
+    }
+
+    @Override
+    public List<PictureDetails> findByParameter(String parameter) {
+        return pictureDetailsDao.getByDynamicParameters(parameter);
     }
 }

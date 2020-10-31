@@ -7,6 +7,8 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class PictureDetailsDaoImpl implements PictureDetailsDao {
     private final SessionFactory sessionFactory;
@@ -35,6 +37,16 @@ public class PictureDetailsDaoImpl implements PictureDetailsDao {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public List<PictureDetails> getByDynamicParameters(String parameter) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM PictureDetails WHERE author = :p OR camera = :p"
+                    + " OR tags = :p", PictureDetails.class)
+                    .setParameter("p", parameter)
+                    .getResultList();
         }
     }
 }
