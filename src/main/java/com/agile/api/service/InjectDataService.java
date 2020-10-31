@@ -33,6 +33,7 @@ public class InjectDataService {
     }
 
     public void injectData() {
+        pictureService.clearData();
         String token = apiService.getAuthToken().getToken();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String url = "http://interview.agileengine.com:80/images";

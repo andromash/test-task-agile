@@ -2,8 +2,10 @@ package com.agile.api.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "pictures")
 public class Picture {
     @Id
     private String id;

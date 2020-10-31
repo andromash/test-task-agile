@@ -9,7 +9,7 @@ public interface PictureDao {
 
     Picture add(Picture picture);
 
-    List<Picture> getAll();
+    List<Picture> getByParameter(Map<String, String[]> parameters);
 
-    List<Picture> getByParameter(Map<String, String> parameters);
+    void clearData();
 }

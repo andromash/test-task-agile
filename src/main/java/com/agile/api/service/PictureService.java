@@ -10,5 +10,7 @@ public interface PictureService {
 
     List<Picture> getAll();
 
-    List<Picture> getByParameter(Map<String, String> parameters);
+    List<Picture> getByParameter(Map<String, String[]> parameters);
+
+    void clearData();
 }

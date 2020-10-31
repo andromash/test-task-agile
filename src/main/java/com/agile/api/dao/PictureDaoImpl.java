@@ -1,6 +1,9 @@
 package com.agile.api.dao;
 
 import com.agile.api.entity.Picture;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
@@ -8,6 +11,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 @Repository
 public class PictureDaoImpl implements PictureDao {
@@ -41,14 +48,40 @@ public class PictureDaoImpl implements PictureDao {
     }
 
     @Override
-    public List<Picture> getAll() {
+    public List<Picture> getByParameter(Map<String, String[]> parameters) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Picture", Picture.class).getResultList();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Picture> pictureCriteriaQuery = criteriaBuilder.createQuery(Picture.class);
+            Root<Picture> root = pictureCriteriaQuery.from(Picture.class);
+            List<Predicate> predicates = new ArrayList<>();
+            for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+                predicates.add(root.get(entry.getKey()).in(Arrays.asList(entry.getValue())));
+            }
+            pictureCriteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
+            return session.createQuery(pictureCriteriaQuery).getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't get the list of phones", e);
         }
     }
 
     @Override
-    public List<Picture> getByParameter(Map<String, String> parameters) {
-        return null;
+    public void clearData() {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.createQuery("DELETE FROM Picture").executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Could not clear the table Picture");
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }
