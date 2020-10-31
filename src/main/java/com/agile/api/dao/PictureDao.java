@@ -1,7 +1,6 @@
 package com.agile.api.dao;
 
 import com.agile.api.entity.Picture;
-
 import java.util.List;
 import java.util.Map;
 

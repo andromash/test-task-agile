@@ -29,8 +29,9 @@ public class PictureMapper {
         List<PictureDto> pictureDtos = new ArrayList<>();
         for (int i = 0; i < pictures.size(); i++) {
             PictureDto pictureDto = new PictureDto();
+            Picture picture = pictures.get(i);
             pictureDto.setCroppedPicture(pictures.get(i).getLink());
-            pictureDto.setId(pictures.get(i).getId());
+            pictureDto.setId(picture.getId());
             pictureDtos.add(pictureDto);
         }
         pageDto.setPictures(pictureDtos);
@@ -42,5 +43,12 @@ public class PictureMapper {
         pictureResponseDto.setId(picture.getId());
         pictureResponseDto.setLink(picture.getLink());
         return pictureResponseDto;
+    }
+
+    public PictureDto mapPictureToPictureDto(Picture picture) {
+        PictureDto pictureDto = new PictureDto();
+        pictureDto.setCroppedPicture(picture.getLink());
+        pictureDto.setId(picture.getId());
+        return pictureDto;
     }
 }
