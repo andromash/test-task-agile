@@ -16,6 +16,6 @@ public class StartController {
 
     @GetMapping
     public void injectData() {
-        injectDataService.injectData();
+        injectDataService.injectImages();
     }
 }

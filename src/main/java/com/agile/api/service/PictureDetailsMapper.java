@@ -2,17 +2,10 @@ package com.agile.api.service;
 
 import com.agile.api.dto.PictureDetailsDto;
 import com.agile.api.entity.PictureDetails;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PictureDetailsMapper {
-    private final PictureMapper mapper;
-
-    @Autowired
-    public PictureDetailsMapper(PictureMapper mapper) {
-        this.mapper = mapper;
-    }
 
     public PictureDetailsDto mapDetailsToDto(PictureDetails details) {
         PictureDetailsDto dto = new PictureDetailsDto();
@@ -20,7 +13,7 @@ public class PictureDetailsMapper {
         dto.setCamera(details.getCamera());
         dto.setFullPicture(details.getFullPicture());
         dto.setTags(details.getTags());
-        dto.setPictureDto(mapper.mapPictureToPictureDto(details.getPicture()));
+        dto.setPicture(details.getPicture());
         return dto;
     }
 

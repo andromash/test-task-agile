@@ -15,8 +15,7 @@ public class PictureDetails {
     private String camera;
     private String tags;
     private String fullPicture;
-    @OneToOne
-    private Picture picture;
+    private String picture;
 
     public Long getId() {
         return id;
@@ -58,11 +57,11 @@ public class PictureDetails {
         this.fullPicture = fullPicture;
     }
 
-    public Picture getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(Picture picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 }
