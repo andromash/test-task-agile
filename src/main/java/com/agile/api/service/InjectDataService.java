@@ -36,18 +36,25 @@ public class InjectDataService {
         pictureService.clearData();
         String token = apiService.getAuthToken().getToken();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String url = "http://interview.agileengine.com:80/images";
-        HttpGet request = new HttpGet(url);
-        request.addHeader("Authorization", "Bearer " + token);
-
-        try (CloseableHttpResponse response = httpClient.execute(request)){
-            PageDto pageDto = objectMapper.readValue(response.getEntity().getContent(), PageDto.class);
-            List<Picture> pictures = pictureMapper.mapPageDtoToPictures(pageDto);
-            for (int i = 0; i < pictures.size(); i++) {
-                pictureService.add(pictures.get(i));
+        int counter = 1;
+        while (true) {
+            String url = "http://interview.agileengine.com:80/images?page=" + counter;
+            HttpGet request = new HttpGet(url);
+            request.addHeader("Authorization", "Bearer " + token);
+            PageDto pageDto = null;
+            try (CloseableHttpResponse response = httpClient.execute(request)){
+                pageDto = objectMapper.readValue(response.getEntity().getContent(), PageDto.class);
+                List<Picture> pictures = pictureMapper.mapPageDtoToPictures(pageDto);
+                for (int i = 0; i < pictures.size(); i++) {
+                    pictureService.add(pictures.get(i));
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Could not inject images", e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Could not inject images", e);
+            if (!pageDto.getHasMore()) {
+                break;
+            }
+            counter++;
         }
     }
 }
