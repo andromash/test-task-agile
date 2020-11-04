@@ -1,20 +1,20 @@
-package com.agile.api.dao;
+package com.agile.api.dao.impl;
 
+import com.agile.api.dao.PictureDao;
 import com.agile.api.entity.Picture;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 @Repository
 public class PictureDaoImpl implements PictureDao {
@@ -44,6 +44,14 @@ public class PictureDaoImpl implements PictureDao {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public List<Picture> getAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Picture", Picture.class)
+                    .getResultList();
         }
     }
 

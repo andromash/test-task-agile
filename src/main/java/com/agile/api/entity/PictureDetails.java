@@ -1,12 +1,15 @@
 package com.agile.api.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "picture_details")
 public class PictureDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +17,10 @@ public class PictureDetails {
     private String author;
     private String camera;
     private String tags;
+    @Column(name = "full_picture")
     private String fullPicture;
-    private String picture;
+    @OneToOne
+    private Picture picture;
 
     public Long getId() {
         return id;
@@ -57,11 +62,11 @@ public class PictureDetails {
         this.fullPicture = fullPicture;
     }
 
-    public String getPicture() {
+    public Picture getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(Picture picture) {
         this.picture = picture;
     }
 }

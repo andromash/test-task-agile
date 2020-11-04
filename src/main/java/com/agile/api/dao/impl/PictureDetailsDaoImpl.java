@@ -1,13 +1,13 @@
-package com.agile.api.dao;
+package com.agile.api.dao.impl;
 
+import com.agile.api.dao.PictureDetailsDao;
 import com.agile.api.entity.PictureDetails;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class PictureDetailsDaoImpl implements PictureDetailsDao {
@@ -43,9 +43,9 @@ public class PictureDetailsDaoImpl implements PictureDetailsDao {
     @Override
     public List<PictureDetails> getByDynamicParameters(String parameter) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM PictureDetails WHERE author = :p OR camera = :p"
-                    + " OR tags = :p", PictureDetails.class)
-                    .setParameter("p", parameter)
+            return session.createQuery("FROM PictureDetails WHERE author LIKE :p OR camera LIKE :p"
+                    + " OR tags LIKE :p", PictureDetails.class)
+                    .setParameter("%p%", parameter)
                     .getResultList();
         }
     }

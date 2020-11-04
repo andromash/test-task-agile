@@ -4,6 +4,8 @@ import com.agile.api.dto.PageDto;
 import com.agile.api.dto.PictureDetailsDto;
 import com.agile.api.entity.Picture;
 import com.agile.api.entity.PictureDetails;
+import com.agile.api.service.mapper.PictureDetailsMapper;
+import com.agile.api.service.mapper.PictureMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
@@ -39,10 +41,6 @@ public class InjectDataService {
     }
 
     public void injectData() {
-        try {
-            pictureService.clearData();
-        } catch (Exception ignored) {
-        }
         String token = apiService.getAuthToken().getToken();
         int counter = 1;
         while (injectImages("?page=" + counter, token)) {
@@ -70,13 +68,13 @@ public class InjectDataService {
     private void injectImageDetails(List<Picture> pictureList, String token) {
         for (Picture picture : pictureList) {
             HttpGet getRequest = new HttpGet(URL + "/"
-                    + picture.getId());
+                    + picture.getImageId());
             getRequest.addHeader("Authorization", "Bearer " + token);
             try (CloseableHttpResponse response = httpClient.execute(getRequest)) {
                 PictureDetailsDto detailsDto = objectMapper.readValue(response.getEntity()
                         .getContent(), PictureDetailsDto.class);
                 PictureDetails details = pictureDetailsMapper.mapDtoToDetails(detailsDto);
-                details.setPicture(picture.getId());
+                details.setPicture(picture);
                 pictureDetailsService.add(details);
             } catch (IOException e) {
                 throw new RuntimeException("Could not inject details", e);
