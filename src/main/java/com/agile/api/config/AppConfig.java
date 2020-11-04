@@ -2,6 +2,8 @@ package com.agile.api.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -53,7 +55,9 @@ public class AppConfig {
 
     @Bean
     public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
     }
 
     @Bean
