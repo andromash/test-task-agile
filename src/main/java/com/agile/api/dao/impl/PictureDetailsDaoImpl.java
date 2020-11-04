@@ -1,6 +1,8 @@
-package com.agile.api.dao;
+package com.agile.api.dao.impl;
 
+import com.agile.api.dao.PictureDetailsDao;
 import com.agile.api.entity.PictureDetails;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -35,6 +37,16 @@ public class PictureDetailsDaoImpl implements PictureDetailsDao {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public List<PictureDetails> getByDynamicParameters(String parameter) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM PictureDetails WHERE author LIKE :p OR camera LIKE :p"
+                    + " OR tags LIKE :p", PictureDetails.class)
+                    .setParameter("%p%", parameter)
+                    .getResultList();
         }
     }
 }

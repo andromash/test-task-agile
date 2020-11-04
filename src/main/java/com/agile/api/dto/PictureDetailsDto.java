@@ -1,11 +1,14 @@
 package com.agile.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PictureDetailsDto {
     private String author;
     private String camera;
     private String tags;
+    @JsonProperty("full_picture")
     private String fullPicture;
-    private PictureDto pictureDto;
+    private String picture;
 
     public String getAuthor() {
         return author;
@@ -39,11 +42,11 @@ public class PictureDetailsDto {
         this.fullPicture = fullPicture;
     }
 
-    public PictureDto getPictureDto() {
-        return pictureDto;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPictureDto(PictureDto pictureDto) {
-        this.pictureDto = pictureDto;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

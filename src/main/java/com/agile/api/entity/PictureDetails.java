@@ -1,12 +1,15 @@
 package com.agile.api.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "picture_details")
 public class PictureDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +17,7 @@ public class PictureDetails {
     private String author;
     private String camera;
     private String tags;
+    @Column(name = "full_picture")
     private String fullPicture;
     @OneToOne
     private Picture picture;

@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 public class ApiService {
+    private static final String URL =  "http://interview.agileengine.com/auth";
     private final CloseableHttpClient httpClient;
     private final ObjectMapper mapper;
 
@@ -25,18 +26,17 @@ public class ApiService {
 
     public AuthResponseDto getAuthToken() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String url = "http://interview.agileengine.com/auth";
-        HttpPost request = new HttpPost(url);
+        HttpPost request = new HttpPost(URL);
         try {
             request.setEntity(new StringEntity("{\"apiKey\" : \"23567b218376f79d9415\"}"));
             request.addHeader("Content-Type", "application/json");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Could not connect to URL " + url, e);
+            throw new RuntimeException("Could not connect to URL " + URL, e);
         }
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             return mapper.readValue(response.getEntity().getContent(), AuthResponseDto.class);
         } catch (IOException e) {
-            throw new RuntimeException("Can not send POST request to " + url, e);
+            throw new RuntimeException("Can not send POST request to " + URL, e);
         }
 
     }
